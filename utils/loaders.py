@@ -31,7 +31,7 @@ def currency_pair_exists(currency_pair):
     return True
 
 
-def get_data(currency_pair, end=None, step=60, limit=1000):
+def get_data(currency_pair, end=None, start=None, step=60, limit=1000):
     '''
     Get bitstamp historic data
 
@@ -45,6 +45,8 @@ def get_data(currency_pair, end=None, step=60, limit=1000):
     else:
         end = int(datetime.datetime.now().timestamp())
     url = f"https://www.bitstamp.net/api/v2/ohlc/{currency_pair}/?step={step}&limit={limit}&end={end}"
+    if start:
+        url = f"https://www.bitstamp.net/api/v2/ohlc/{currency_pair}/?step={step}&limit={limit}&start={start}"
     headers = {"Accept": "application/json"}
     auth = HTTPBasicAuth('apikey', key.apikey)
 
@@ -95,4 +97,36 @@ def populate_dataset(currency_pair, step=60, limit=1000, n_requests=100):
     df.timestamp = df.timestamp.astype(int)
     df.index = pd.to_datetime(df.timestamp, unit='s')
     df_complete = pd.concat([df, old_df])
+    df_complete.to_pickle(f"database/{currency_pair}.pkl")
+
+def update_dataset(currency_pair, step=60, limit=1000, n_requests=100):
+    '''
+    Update dataset for currency_pair
+
+    :param str currency_pair: Currency pair (ex btcusd)
+    :param int step: Seconds step, 60, 180, 300, 900, 1800, 3600, 7200, 14400, 21600, 43200, 86400, 259200
+    :param int limit: How many steps
+    :param int n_requests: How many requests, max 8000 per 10 minutes
+    '''
+    if not currency_pair_exists(currency_pair):
+        raise ValueError("This currency pair is not available to download.")
+    if not os.path.isdir('database'):
+        if os.path.isdir('../database'):
+            os.chdir("..")
+        else:
+            raise FileNotFoundError("Can't find database folder, you are in the wrong folder.") 
+    try:
+        _, end, old_df = check_availability(currency_pair)
+    except ValueError:
+        print("Currency pair not found in the database, impossible to update.")
+        raise
+    data = get_data(
+        currency_pair=currency_pair,
+        step=step, 
+        limit=limit, 
+        start=end
+    df = pd.DataFrame(data.json()["data"]["ohlc"]).astype(float)
+    df.timestamp = df.timestamp.astype(int)
+    df.index = pd.to_datetime(df.timestamp, unit='s')
+    df_complete = pd.concat([old_df, df])
     df_complete.to_pickle(f"database/{currency_pair}.pkl")
