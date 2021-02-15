@@ -50,6 +50,7 @@ def ultimate(prices: pd.Series, low: pd.Series, high: pd.Series, buylevel=30, se
     :param bool getgains: If gains should be returned
     :param bool winning: If policy gain - no strategy gain should be returned
     :param float commissions: Percentage commissions per transaction
+    :param bool accelerate: If uses cython
     '''
     if prices.index.duplicated().any():
         raise ValueError("There are some duplicate indexes.")
