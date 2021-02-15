@@ -10,15 +10,36 @@ import datetime
 
 from apikeys import key
 
+def currency_pair_exists(currency_pair):
+    '''
+    Check if currenct pair exists
+
+    :param str currency_pair: Currency pair (ex btcusd)
+    '''
+    url = f"https://www.bitstamp.net/api/v2/ohlc/{currency_pair}/?step=60&limit=1"
+    headers = {"Accept": "application/json"}
+    auth = HTTPBasicAuth('apikey', key.apikey)
+    response = requests.get(url, headers=headers , auth=auth)
+    print("response:")
+    print(response.text)
+    if response.text == "":
+        return False
+    try:
+        response.json()["data"]
+    except TypeError:
+        return False
+    return True
+
+
 def get_data(currency_pair, end=None, step=60, limit=1000):
     '''
-   Get bitstamp historic data
+    Get bitstamp historic data
 
-   :param str currency_pair: Currency pair (ex btcusd)
-   :param str end: Final date
-   :param int step: Seconds step, 60, 180, 300, 900, 1800, 3600, 7200, 14400, 21600, 43200, 86400, 259200
-   :param int limit: How many steps
-   '''
+    :param str currency_pair: Currency pair (ex btcusd)
+    :param str end: Final date
+    :param int step: Seconds step, 60, 180, 300, 900, 1800, 3600, 7200, 14400, 21600, 43200, 86400, 259200
+    :param int limit: How many steps
+    '''
     if end:
         end = int(time.mktime(datetime.datetime.strptime(end, "%d/%m/%Y %H %M %S").timetuple()))
     else:
@@ -31,11 +52,11 @@ def get_data(currency_pair, end=None, step=60, limit=1000):
 
 def check_availability(currency_pair):
     '''
-   Return first and last available dates on dataset for currency_pair and dataset if available
+    Return first and last available dates on dataset for currency_pair and dataset if available
 
-   :param str currency_pair: Currency pair (ex btcusd)
-   :raise ValueError: if currency_pair not in database
-   '''
+    :param str currency_pair: Currency pair (ex btcusd)
+    :raise ValueError: if currency_pair not in database
+    '''
     path = f"database/{currency_pair}.pkl"
     if not os.path.isfile(path):
         raise ValueError("Currency pair not found in the database")
@@ -44,13 +65,15 @@ def check_availability(currency_pair):
 
 def populate_dataset(currency_pair, step=60, limit=1000, n_requests=100):
     '''
-   Populate dataset for currency_pair
+    Populate dataset for currency_pair
 
-   :param str currency_pair: Currency pair (ex btcusd)
-   :param int step: Seconds step, 60, 180, 300, 900, 1800, 3600, 7200, 14400, 21600, 43200, 86400, 259200
-   :param int limit: How many steps
-   :param int n_requests: How many requests, max 8000 per 10 minutes
-   '''
+    :param str currency_pair: Currency pair (ex btcusd)
+    :param int step: Seconds step, 60, 180, 300, 900, 1800, 3600, 7200, 14400, 21600, 43200, 86400, 259200
+    :param int limit: How many steps
+    :param int n_requests: How many requests, max 8000 per 10 minutes
+    '''
+    if not currency_pair_exists(currency_pair):
+        raise ValueError("This currency pair is not available to download.")
     if not os.path.isdir('database'):
         if os.path.isdir('../database'):
             os.chdir("..")
