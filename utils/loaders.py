@@ -36,7 +36,7 @@ def check_availability(currency_pair):
    :param str currency_pair: Currency pair (ex btcusd)
    :raise ValueError: if currency_pair not in database
    '''
-    path = f"bitstamp/{currency_pair}.pkl"
+    path = f"database/{currency_pair}.pkl"
     if not os.path.isfile(path):
         raise ValueError("Currency pair not found in the database")
     df = pd.read_pickle(path)
@@ -51,11 +51,11 @@ def populate_dataset(currency_pair, step=60, limit=1000, n_requests=100):
    :param int limit: How many steps
    :param int n_requests: How many requests, max 8000 per 10 minutes
    '''
-    if not os.path.isdir('bitstamp'):
-        if os.path.isdir('../bitstamp'):
+    if not os.path.isdir('database'):
+        if os.path.isdir('../database'):
             os.chdir("..")
         else:
-            raise FileNotFoundError("Can't find bitstamp folder, you are in the wrong folder.") 
+            raise FileNotFoundError("Can't find database folder, you are in the wrong folder.") 
     try:
         start, _, old_df = check_availability(currency_pair)
     except ValueError:
@@ -72,4 +72,4 @@ def populate_dataset(currency_pair, step=60, limit=1000, n_requests=100):
     df.timestamp = df.timestamp.astype(int)
     df.index = pd.to_datetime(df.timestamp, unit='s')
     df_complete = pd.concat([df, old_df])
-    df_complete.to_pickle(f"bitstamp/{currency_pair}.pkl")
+    df_complete.to_pickle(f"database/{currency_pair}.pkl")
