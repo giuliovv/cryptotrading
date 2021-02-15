@@ -20,8 +20,6 @@ def currency_pair_exists(currency_pair):
     headers = {"Accept": "application/json"}
     auth = HTTPBasicAuth('apikey', key.apikey)
     response = requests.get(url, headers=headers , auth=auth)
-    print("response:")
-    print(response.text)
     if response.text == "":
         return False
     try:
