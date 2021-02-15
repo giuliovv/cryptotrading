@@ -1,5 +1,8 @@
 import numpy as np
 import pandas as pd
+from tqdm.auto import tqdm
+
+from utils import ultimate_cycle
 
 def macd(prices: pd.Series, long: int, short: int, strategy=False, getgains=False, winning=False, commissions=0.005) -> pd.Series:
     '''
@@ -35,7 +38,7 @@ def macd(prices: pd.Series, long: int, short: int, strategy=False, getgains=Fals
         return gains(prices=prices, policy=policy, commissions=commissions)
     return macdvalues
     
-def ultimate(prices: pd.Series, low: pd.Series, high: pd.Series, buylevel=30, selllevel=70, days=7, strategy=False, getgains=False, winning=False, commissions=0.005) -> pd.Series:
+def ultimate(prices: pd.Series, low: pd.Series, high: pd.Series, buylevel=30, selllevel=70, days=7, strategy=False, getgains=False, winning=False, commissions=0.005, accelerate=True) -> pd.Series:
     '''
     Return the Ultimate oscillator
 
@@ -62,14 +65,19 @@ def ultimate(prices: pd.Series, low: pd.Series, high: pd.Series, buylevel=30, se
         sell = ult > selllevel
         sells = sell.shift(1) != sell
         policy = pd.Series(np.zeros(ult.size), index=ult.index)
-        token = 1
-        for idx in buys[buys | sells].index:
-            if token and buys.loc[idx]:
-                policy.loc[idx] = 1
-                token = 0
-            elif not token and sells.loc[idx]:
-                policy.loc[idx] = 1
-                token = 1
+        if accelerate:
+            index = buys[buys | sells].reset_index(drop=True).index.to_numpy()
+            policy_ = ultimate_cycle.ultimate_cycle(policy.to_numpy(), buys.to_numpy(), sells.to_numpy(), index)
+            policy = pd.Series(policy_, index=policy.index)
+        else:
+            token = 1
+            for idx in tqdm(buys[buys | sells].index):
+                if token and buys.loc[idx]:
+                    policy.loc[idx] = 1
+                    token = 0
+                elif not token and sells.loc[idx]:
+                    policy.loc[idx] = 1
+                    token = 1
         policy = policy == 1
     else:
         return ult
