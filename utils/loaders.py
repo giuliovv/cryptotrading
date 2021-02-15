@@ -124,7 +124,7 @@ def update_dataset(currency_pair, step=60, limit=1000, n_requests=100):
         currency_pair=currency_pair,
         step=step, 
         limit=limit, 
-        start=end
+        start=end)
     df = pd.DataFrame(data.json()["data"]["ohlc"]).astype(float)
     df.timestamp = df.timestamp.astype(int)
     df.index = pd.to_datetime(df.timestamp, unit='s')
