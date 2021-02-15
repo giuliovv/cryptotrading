@@ -35,7 +35,7 @@ def macd(prices: pd.Series, long: int, short: int, strategy=False, getgains=Fals
         return gains(prices=prices, policy=policy, commissions=commissions)
     return macdvalues
     
-def ultimate(prices: pd.Series, low: pd.Series, high: pd.Series, days=7, strategy=False, getgains=False, winning=False, commissions=0.005) -> pd.Series:
+def ultimate(prices: pd.Series, low: pd.Series, high: pd.Series, buylevel=30, selllevel=70, days=7, strategy=False, getgains=False, winning=False, commissions=0.005) -> pd.Series:
     '''
     Return the Ultimate oscillator
 
@@ -56,19 +56,18 @@ def ultimate(prices: pd.Series, low: pd.Series, high: pd.Series, days=7, strateg
     avg2 = bp.rolling(2*days).sum()/tr.rolling(2*days).sum()
     avg3 = bp.rolling(3*days).sum()/tr.rolling(3*days).sum()
     ult = 100 * (4*avg1 + 2*avg2 + avg3)/7
-    ult = ult.dropna()
     if winning or strategy or getgains:
-        buy = ult > 70
+        buy = ult < buylevel
         buys = buy.shift(1) != buy
-        sell = ult < 30
+        sell = ult > selllevel
         sells = sell.shift(1) != sell
         policy = pd.Series(np.zeros(ult.size), index=ult.index)
         token = 1
         for idx in buys[buys | sells].index:
-            if token and buys.loc[idx].all():
+            if token and buys.loc[idx]:
                 policy.loc[idx] = 1
                 token = 0
-            elif not token and sells.loc[idx].all():
+            elif not token and sells.loc[idx]:
                 policy.loc[idx] = 1
                 token = 1
         policy = policy == 1
