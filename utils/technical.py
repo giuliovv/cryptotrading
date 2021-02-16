@@ -138,7 +138,9 @@ def getpolicy(buy: pd.Series, sell: pd.Series, accelerate=True) -> pd.Series:
     sells = sell.shift(1) != sell
     policy = pd.Series(np.zeros(buy.size), index=buy.index)
     if accelerate:
-        index = buys[buys | sells].reset_index(drop=True).index.to_numpy()
+        buys.reset_index(drop=True, inplace=True)
+        sells.reset_index(drop=True, inplace=True)
+        index = buys[buys | sells].index.to_numpy()
         policy_ = ultimate_cycle.ultimate_cycle(policy.to_numpy(), buys.to_numpy(), sells.to_numpy(), index)
         policy = pd.Series(policy_, index=policy.index)
     else:
