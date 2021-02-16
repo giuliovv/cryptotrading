@@ -77,7 +77,7 @@ def ultimate(prices: pd.Series, low: pd.Series, high: pd.Series, buylevel=30, se
     if getgains:
         return gains(prices=prices, policy=policy, commissions=commissions)
 
-def bollinger_bands(prices: pd.Series, k=1, period=1000, strategy=False, getgains=False, winning=False, commissions=0.005, accelerate=True) -> pd.Series:
+def bollinger_bands(prices: pd.Series, k=1, period=1000, strategy=False, getgains=False, winning=False, commissions=0.005, accelerate=True) -> (pd.Series, pd.Series):
     '''
     Return the Bollinger bands
 
@@ -120,7 +120,10 @@ def gains(prices: pd.Series, policy: pd.Series, budget=100, commissions=0.005) -
     :param float commissions: Percentage commissions per transaction
     '''
     prices = prices.loc[policy.index]
-    gains = (prices[policy].shift(-1)/prices[policy]) - 1
+    buy = prices[policy].iloc[::2]
+    buy = buy.iloc[:buy.size - buy.size%2].values
+    sell = prices[policy].iloc[1::2]
+    gains = (sell/buy) - 1
     return (gains - commissions*2)*budget
 
 def getpolicy(buy: pd.Series, sell: pd.Series, accelerate=True) -> pd.Series:
