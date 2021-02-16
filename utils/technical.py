@@ -4,6 +4,8 @@ from tqdm.auto import tqdm
 
 from utils import ultimate_cycle
 
+# OSCILLATORS
+
 def macd(prices: pd.Series, long: int, short: int, strategy=False, getgains=False, winning=False, commissions=0.005) -> pd.Series:
     '''
     Return the MACD
@@ -62,24 +64,8 @@ def ultimate(prices: pd.Series, low: pd.Series, high: pd.Series, buylevel=30, se
     ult = 100 * (4*avg1 + 2*avg2 + avg3)/7
     if winning or strategy or getgains:
         buy = ult < buylevel
-        buys = buy.shift(1) != buy
         sell = ult > selllevel
-        sells = sell.shift(1) != sell
-        policy = pd.Series(np.zeros(ult.size), index=ult.index)
-        if accelerate:
-            index = buys[buys | sells].reset_index(drop=True).index.to_numpy()
-            policy_ = ultimate_cycle.ultimate_cycle(policy.to_numpy(), buys.to_numpy(), sells.to_numpy(), index)
-            policy = pd.Series(policy_, index=policy.index)
-        else:
-            token = 1
-            for idx in tqdm(buys[buys | sells].index):
-                if token and buys.loc[idx]:
-                    policy.loc[idx] = 1
-                    token = 0
-                elif not token and sells.loc[idx]:
-                    policy.loc[idx] = 1
-                    token = 1
-        policy = policy == 1
+        policy = getpolicy(buy=buy, sell=sell, accelerate=accelerate)
     else:
         return ult
     if winning:
@@ -90,6 +76,39 @@ def ultimate(prices: pd.Series, low: pd.Series, high: pd.Series, buylevel=30, se
         return policy
     if getgains:
         return gains(prices=prices, policy=policy, commissions=commissions)
+
+def bollinger_bands(prices: pd.Series, k=1, period=1000, strategy=False, getgains=False, winning=False, commissions=0.005, accelerate=True) -> pd.Series:
+    '''
+    Return the Bollinger bands
+
+    :param pd.Series prices: Prices of the stock
+    :param int k: How many standard deviations out
+    :param int period: Period for moving average 
+    :param bool strategy: If strategy should be returned
+    :param bool getgains: If gains should be returned
+    :param bool winning: If policy gain - no strategy gain should be returned
+    :param float commissions: Percentage commissions per transaction
+    :param bool accelerate: If uses cython
+    '''
+    std = prices.rolling(period).std()
+    mean = prices.rolling(period).mean()
+    upperband = mean + std*k
+    lowerband = mean - std*k
+    if strategy or getgains or winning:
+        sell = prices > upperband
+        buy = prices < lowerband
+        policy = getpolicy(buy=buy, sell=sell, accelerate=accelerate)
+    if winning:
+        gain = gains(prices=prices, policy=policy, commissions=commissions)
+        diff = (prices.iloc[-1]/prices.iloc[0]) - 1
+        return gain.sum() - diff * 100
+    if strategy:
+        return policy
+    if getgains:
+        return gains(prices=prices, policy=policy, commissions=commissions)
+    return lowerband, upperband
+
+# UTILS
 
 def gains(prices: pd.Series, policy: pd.Series, budget=100, commissions=0.005) -> pd.Series:
     '''
@@ -103,3 +122,29 @@ def gains(prices: pd.Series, policy: pd.Series, budget=100, commissions=0.005) -
     prices = prices.loc[policy.index]
     gains = (prices[policy].shift(-1)/prices[policy]) - 1
     return (gains - commissions*2)*budget
+
+def getpolicy(buy: pd.Series, sell: pd.Series, accelerate=True) -> pd.Series:
+    """
+    Return the policy given all the moments sell or buy is True
+
+    :param pd.Series buy: When the buy pricinple is respected
+    :param pd.Series sell: When the sell pricinple is respected
+    :param bool accelerate: If use cython
+    """
+    buys = buy.shift(1) != buy
+    sells = sell.shift(1) != sell
+    policy = pd.Series(np.zeros(buy.size), index=buy.index)
+    if accelerate:
+        index = buys[buys | sells].reset_index(drop=True).index.to_numpy()
+        policy_ = ultimate_cycle.ultimate_cycle(policy.to_numpy(), buys.to_numpy(), sells.to_numpy(), index)
+        policy = pd.Series(policy_, index=policy.index)
+    else:
+        token = 1
+        for idx in tqdm(buys[buys | sells].index):
+            if token and buys.loc[idx]:
+                policy.loc[idx] = 1
+                token = 0
+            elif not token and sells.loc[idx]:
+                policy.loc[idx] = 1
+                token = 1
+    return policy == 1
