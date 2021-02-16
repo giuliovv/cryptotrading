@@ -121,8 +121,8 @@ def gains(prices: pd.Series, policy: pd.Series, budget=100, commissions=0.005) -
     '''
     prices = prices.loc[policy.index]
     buy = prices[policy].iloc[::2]
-    buy = buy.iloc[:buy.size - buy.size%2].values
     sell = prices[policy].iloc[1::2]
+    buy = buy.iloc[:sell.size].values
     gains = (sell/buy) - 1
     return (gains - commissions*2)*budget
 
