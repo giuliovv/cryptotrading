@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>technical API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>technical</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import numpy as np
+import pandas as pd
+from tqdm.auto import tqdm
+
+from utils import ultimate_cycle
+
+# OSCILLATORS
+
+def macd(prices: pd.Series, long: int, short: int, strategy=False, getgains=False, winning=False, commissions=0.005) -&gt; pd.Series:
+    &#39;&#39;&#39;
+    Return the MACD
+
+    :param pd.Series prices: Prices of the stock
+    :param int long: Long moving average length
+    :param int short: Short moving average length
+    :param bool strategy: If strategy should be returned
+    :param bool getgains: If gains should be returned
+    :param bool winning: If policy gain - no strategy gain should be returned
+    :param float commissions: Percentage commissions per transaction
+    &#39;&#39;&#39;
+    if prices.index.duplicated().any():
+        raise ValueError(&#34;There are some duplicate indexes.&#34;)
+    macdvalues = prices.rolling(short).mean() - prices.rolling(long).mean()
+    if winning:
+        positive = macdvalues &gt; 0
+        policy = positive.shift(1) != positive
+        if positive.iloc[0]:
+            policy.iloc[0] = 1
+        gain = gains(prices=prices, policy=policy, commissions=commissions)
+        diff = (prices.iloc[-1]/prices.iloc[0]) - 1
+        return gain.sum() - diff * 100
+    if strategy:
+        positive = macdvalues &gt; 0
+        return positive.shift(1) != positive
+    if getgains:
+        positive = macdvalues &gt; 0
+        policy = positive.shift(1) != positive
+        if positive.iloc[0]:
+            policy.iloc[0] = 1
+        return gains(prices=prices, policy=policy, commissions=commissions)
+    return macdvalues
+    
+def ultimate(prices: pd.Series, low: pd.Series, high: pd.Series, buylevel=30, selllevel=70, days=7, strategy=False, getgains=False, winning=False, commissions=0.005, mingain=0, accelerate=True, firstopportunity=False, stoploss=0) -&gt; pd.Series:
+    &#39;&#39;&#39;
+    Return the Ultimate oscillator
+
+    :param pd.Series prices: Prices of the stock
+    :param pd.Series low: Long moving average length
+    :param pd.Series high: Short moving average length
+    :param int days: Days for moving sum
+    :param bool strategy: If strategy should be returned
+    :param bool getgains: If gains should be returned
+    :param bool winning: If policy gain - no strategy gain should be returned
+    :param float commissions: Percentage commissions per transaction
+    :param bool accelerate: If uses cython
+    :param float mingain: Minimum gain to sell
+    :param bool firstopportunity: If sell first time you have mingain
+    :param float stoploss: Maximum percentage loss
+    &#39;&#39;&#39;
+    if prices.index.duplicated().any():
+        raise ValueError(&#34;There are some duplicate indexes.&#34;)
+    bp = prices - np.minimum(prices.shift(1), low)
+    tr = np.maximum(high, prices.shift(1)) - np.minimum(prices.shift(1), low)
+    avg1 = bp.rolling(days).sum()/tr.rolling(days).sum()
+    avg2 = bp.rolling(2*days).sum()/tr.rolling(2*days).sum()
+    avg3 = bp.rolling(3*days).sum()/tr.rolling(3*days).sum()
+    ult = 100 * (4*avg1 + 2*avg2 + avg3)/7
+    if winning or strategy or getgains:
+        buy = ult &lt; buylevel
+        sell = ult &gt; selllevel
+        policy = getpolicy(buy=buy, sell=sell, prices=prices, mingain=mingain, stoploss=stoploss, accelerate=accelerate, firstopportunity=firstopportunity)
+    else:
+        return ult
+    if winning:
+        gain = gains(prices=prices, policy=policy, commissions=commissions)
+        diff = (prices.iloc[-1]/prices.iloc[0]) - 1
+        return gain.sum() - diff * 100
+    if strategy:
+        return policy
+    if getgains:
+        return gains(prices=prices, policy=policy, commissions=commissions)
+
+def bollinger_bands(prices: pd.Series, k=1, period=1000, strategy=False, getgains=False, winning=False, commissions=0.005, accelerate=True, mingain=0, firstopportunity=False, stoploss=0) -&gt; (pd.Series, pd.Series):
+    &#39;&#39;&#39;
+    Return the Bollinger bands
+
+    :param pd.Series prices: Prices of the stock
+    :param int k: How many standard deviations out
+    :param int period: Period for moving average 
+    :param bool strategy: If strategy should be returned
+    :param bool getgains: If gains should be returned
+    :param bool winning: If policy gain - no strategy gain should be returned
+    :param float commissions: Percentage commissions per transaction
+    :param bool accelerate: If uses cython
+    :param float mingain: Minimum gain to sell
+    :param bool firstopportunity: If sell first time you have mingain
+    :param float stoploss: Maximum percentage loss
+    &#39;&#39;&#39;
+    std = prices.rolling(period).std()
+    mean = prices.rolling(period).mean()
+    upperband = mean + std*k
+    lowerband = mean - std*k
+    if strategy or getgains or winning:
+        sell = prices &gt; upperband
+        buy = prices &lt; lowerband
+        policy = getpolicy(buy=buy, sell=sell, prices=prices, mingain=mingain, stoploss=stoploss, accelerate=accelerate, firstopportunity=firstopportunity)
+    if winning:
+        gain = gains(prices=prices, policy=policy, commissions=commissions)
+        diff = (prices.iloc[-1]/prices.iloc[0]) - 1
+        return gain.sum() - diff * 100
+    if strategy:
+        return policy
+    if getgains:
+        return gains(prices=prices, policy=policy, commissions=commissions)
+    return lowerband, upperband
+
+# UTILS
+
+def gains(prices: pd.Series, policy: pd.Series, budget=100, commissions=0.005) -&gt; pd.Series:
+    &#39;&#39;&#39;
+    Return the gains
+
+    :param pd.Series prices: Prices of the stock
+    :param pd.Series policy: True when buy or sell
+    :param float budget: My budget
+    :param float commissions: Percentage commissions per transaction
+    &#39;&#39;&#39;
+    prices = prices.loc[policy.index]
+    buy = prices[policy].iloc[::2]
+    sell = prices[policy].iloc[1::2]
+    buy = buy.iloc[:sell.size].values
+    gains = (sell/buy) - 1
+    return (gains - commissions*2)*budget
+
+def getpolicy(buy: pd.Series, sell: pd.Series, prices: pd.Series, mingain=0, stoploss=0, accelerate=True, firstopportunity=False) -&gt; pd.Series:
+    &#34;&#34;&#34;
+    Return the policy given all the moments sell or buy is True
+
+    :param pd.Series buy: When the buy pricinple is respected
+    :param pd.Series sell: When the sell pricinple is respected
+    :param float mingain: Minimum gain to sell
+    :param float stoploss: Maximum percentage loss
+    :param bool accelerate: If use cython
+    :param bool firstopportunity: If sell first time you have mingain, MUST USE ACCELERATE
+    &#34;&#34;&#34;
+    if firstopportunity and not accelerate:
+        print(&#34;Chaning accelerate to True to use firstopportunity.&#34;)
+        accelerate = True
+    buys = buy.shift(1) != buy
+    sells = sell.shift(1) != sell
+    policy = pd.Series(np.zeros(buy.size), index=buy.index)
+    if accelerate:
+        buys.reset_index(drop=True, inplace=True)
+        sells.reset_index(drop=True, inplace=True)
+        index = buys[buys | sells].index.to_numpy()
+        if mingain == 0 and stoploss == 0:
+            policy_ = ultimate_cycle.ultimate_cycle(policy.to_numpy(), buys.to_numpy(), sells.to_numpy(), index)
+        elif not firstopportunity and stoploss == 0:
+            policy_ = ultimate_cycle.cycle_checkgain(policy.to_numpy(), buys.to_numpy(), sells.to_numpy(), index, prices.to_numpy(), mingain)
+        else:
+            policy_ = ultimate_cycle.cycle_absolutegain(policy.to_numpy(dtype=bool), buys.to_numpy(dtype=bool), buys[buys].index.to_numpy(dtype=np.int32), prices.to_numpy(dtype=np.float32), mingain, stoploss)
+        policy = pd.Series(policy_, index=policy.index)
+    else:
+        token = 1
+        buy_price = 0
+        for idx in tqdm(buys[buys | sells].index):
+            if token and buys.loc[idx]:
+                policy.loc[idx] = 1
+                token = 0
+                buy_price = prices.loc[idx]
+            elif not token and sells.loc[idx] and mingain*(prices.loc[idx]/buy_price) &gt;= mingain*(1 + mingain):
+                policy.loc[idx] = 1
+                token = 1
+    return policy == 1</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="technical.bollinger_bands"><code class="name flex">
+<span>def <span class="ident">bollinger_bands</span></span>(<span>prices: pandas.core.series.Series, k=1, period=1000, strategy=False, getgains=False, winning=False, commissions=0.005, accelerate=True, mingain=0, firstopportunity=False, stoploss=0) ‑> (<class 'pandas.core.series.Series'>, <class 'pandas.core.series.Series'>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the Bollinger bands</p>
+<p>:param pd.Series prices: Prices of the stock
+:param int k: How many standard deviations out
+:param int period: Period for moving average
+:param bool strategy: If strategy should be returned
+:param bool getgains: If gains should be returned
+:param bool winning: If policy gain - no strategy gain should be returned
+:param float commissions: Percentage commissions per transaction
+:param bool accelerate: If uses cython
+:param float mingain: Minimum gain to sell
+:param bool firstopportunity: If sell first time you have mingain
+:param float stoploss: Maximum percentage loss</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def bollinger_bands(prices: pd.Series, k=1, period=1000, strategy=False, getgains=False, winning=False, commissions=0.005, accelerate=True, mingain=0, firstopportunity=False, stoploss=0) -&gt; (pd.Series, pd.Series):
+    &#39;&#39;&#39;
+    Return the Bollinger bands
+
+    :param pd.Series prices: Prices of the stock
+    :param int k: How many standard deviations out
+    :param int period: Period for moving average 
+    :param bool strategy: If strategy should be returned
+    :param bool getgains: If gains should be returned
+    :param bool winning: If policy gain - no strategy gain should be returned
+    :param float commissions: Percentage commissions per transaction
+    :param bool accelerate: If uses cython
+    :param float mingain: Minimum gain to sell
+    :param bool firstopportunity: If sell first time you have mingain
+    :param float stoploss: Maximum percentage loss
+    &#39;&#39;&#39;
+    std = prices.rolling(period).std()
+    mean = prices.rolling(period).mean()
+    upperband = mean + std*k
+    lowerband = mean - std*k
+    if strategy or getgains or winning:
+        sell = prices &gt; upperband
+        buy = prices &lt; lowerband
+        policy = getpolicy(buy=buy, sell=sell, prices=prices, mingain=mingain, stoploss=stoploss, accelerate=accelerate, firstopportunity=firstopportunity)
+    if winning:
+        gain = gains(prices=prices, policy=policy, commissions=commissions)
+        diff = (prices.iloc[-1]/prices.iloc[0]) - 1
+        return gain.sum() - diff * 100
+    if strategy:
+        return policy
+    if getgains:
+        return gains(prices=prices, policy=policy, commissions=commissions)
+    return lowerband, upperband</code></pre>
+</details>
+</dd>
+<dt id="technical.gains"><code class="name flex">
+<span>def <span class="ident">gains</span></span>(<span>prices: pandas.core.series.Series, policy: pandas.core.series.Series, budget=100, commissions=0.005) ‑> pandas.core.series.Series</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the gains</p>
+<p>:param pd.Series prices: Prices of the stock
+:param pd.Series policy: True when buy or sell
+:param float budget: My budget
+:param float commissions: Percentage commissions per transaction</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def gains(prices: pd.Series, policy: pd.Series, budget=100, commissions=0.005) -&gt; pd.Series:
+    &#39;&#39;&#39;
+    Return the gains
+
+    :param pd.Series prices: Prices of the stock
+    :param pd.Series policy: True when buy or sell
+    :param float budget: My budget
+    :param float commissions: Percentage commissions per transaction
+    &#39;&#39;&#39;
+    prices = prices.loc[policy.index]
+    buy = prices[policy].iloc[::2]
+    sell = prices[policy].iloc[1::2]
+    buy = buy.iloc[:sell.size].values
+    gains = (sell/buy) - 1
+    return (gains - commissions*2)*budget</code></pre>
+</details>
+</dd>
+<dt id="technical.getpolicy"><code class="name flex">
+<span>def <span class="ident">getpolicy</span></span>(<span>buy: pandas.core.series.Series, sell: pandas.core.series.Series, prices: pandas.core.series.Series, mingain=0, stoploss=0, accelerate=True, firstopportunity=False) ‑> pandas.core.series.Series</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the policy given all the moments sell or buy is True</p>
+<p>:param pd.Series buy: When the buy pricinple is respected
+:param pd.Series sell: When the sell pricinple is respected
+:param float mingain: Minimum gain to sell
+:param float stoploss: Maximum percentage loss
+:param bool accelerate: If use cython
+:param bool firstopportunity: If sell first time you have mingain, MUST USE ACCELERATE</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getpolicy(buy: pd.Series, sell: pd.Series, prices: pd.Series, mingain=0, stoploss=0, accelerate=True, firstopportunity=False) -&gt; pd.Series:
+    &#34;&#34;&#34;
+    Return the policy given all the moments sell or buy is True
+
+    :param pd.Series buy: When the buy pricinple is respected
+    :param pd.Series sell: When the sell pricinple is respected
+    :param float mingain: Minimum gain to sell
+    :param float stoploss: Maximum percentage loss
+    :param bool accelerate: If use cython
+    :param bool firstopportunity: If sell first time you have mingain, MUST USE ACCELERATE
+    &#34;&#34;&#34;
+    if firstopportunity and not accelerate:
+        print(&#34;Chaning accelerate to True to use firstopportunity.&#34;)
+        accelerate = True
+    buys = buy.shift(1) != buy
+    sells = sell.shift(1) != sell
+    policy = pd.Series(np.zeros(buy.size), index=buy.index)
+    if accelerate:
+        buys.reset_index(drop=True, inplace=True)
+        sells.reset_index(drop=True, inplace=True)
+        index = buys[buys | sells].index.to_numpy()
+        if mingain == 0 and stoploss == 0:
+            policy_ = ultimate_cycle.ultimate_cycle(policy.to_numpy(), buys.to_numpy(), sells.to_numpy(), index)
+        elif not firstopportunity and stoploss == 0:
+            policy_ = ultimate_cycle.cycle_checkgain(policy.to_numpy(), buys.to_numpy(), sells.to_numpy(), index, prices.to_numpy(), mingain)
+        else:
+            policy_ = ultimate_cycle.cycle_absolutegain(policy.to_numpy(dtype=bool), buys.to_numpy(dtype=bool), buys[buys].index.to_numpy(dtype=np.int32), prices.to_numpy(dtype=np.float32), mingain, stoploss)
+        policy = pd.Series(policy_, index=policy.index)
+    else:
+        token = 1
+        buy_price = 0
+        for idx in tqdm(buys[buys | sells].index):
+            if token and buys.loc[idx]:
+                policy.loc[idx] = 1
+                token = 0
+                buy_price = prices.loc[idx]
+            elif not token and sells.loc[idx] and mingain*(prices.loc[idx]/buy_price) &gt;= mingain*(1 + mingain):
+                policy.loc[idx] = 1
+                token = 1
+    return policy == 1</code></pre>
+</details>
+</dd>
+<dt id="technical.macd"><code class="name flex">
+<span>def <span class="ident">macd</span></span>(<span>prices: pandas.core.series.Series, long: int, short: int, strategy=False, getgains=False, winning=False, commissions=0.005) ‑> pandas.core.series.Series</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the MACD</p>
+<p>:param pd.Series prices: Prices of the stock
+:param int long: Long moving average length
+:param int short: Short moving average length
+:param bool strategy: If strategy should be returned
+:param bool getgains: If gains should be returned
+:param bool winning: If policy gain - no strategy gain should be returned
+:param float commissions: Percentage commissions per transaction</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def macd(prices: pd.Series, long: int, short: int, strategy=False, getgains=False, winning=False, commissions=0.005) -&gt; pd.Series:
+    &#39;&#39;&#39;
+    Return the MACD
+
+    :param pd.Series prices: Prices of the stock
+    :param int long: Long moving average length
+    :param int short: Short moving average length
+    :param bool strategy: If strategy should be returned
+    :param bool getgains: If gains should be returned
+    :param bool winning: If policy gain - no strategy gain should be returned
+    :param float commissions: Percentage commissions per transaction
+    &#39;&#39;&#39;
+    if prices.index.duplicated().any():
+        raise ValueError(&#34;There are some duplicate indexes.&#34;)
+    macdvalues = prices.rolling(short).mean() - prices.rolling(long).mean()
+    if winning:
+        positive = macdvalues &gt; 0
+        policy = positive.shift(1) != positive
+        if positive.iloc[0]:
+            policy.iloc[0] = 1
+        gain = gains(prices=prices, policy=policy, commissions=commissions)
+        diff = (prices.iloc[-1]/prices.iloc[0]) - 1
+        return gain.sum() - diff * 100
+    if strategy:
+        positive = macdvalues &gt; 0
+        return positive.shift(1) != positive
+    if getgains:
+        positive = macdvalues &gt; 0
+        policy = positive.shift(1) != positive
+        if positive.iloc[0]:
+            policy.iloc[0] = 1
+        return gains(prices=prices, policy=policy, commissions=commissions)
+    return macdvalues</code></pre>
+</details>
+</dd>
+<dt id="technical.ultimate"><code class="name flex">
+<span>def <span class="ident">ultimate</span></span>(<span>prices: pandas.core.series.Series, low: pandas.core.series.Series, high: pandas.core.series.Series, buylevel=30, selllevel=70, days=7, strategy=False, getgains=False, winning=False, commissions=0.005, mingain=0, accelerate=True, firstopportunity=False, stoploss=0) ‑> pandas.core.series.Series</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the Ultimate oscillator</p>
+<p>:param pd.Series prices: Prices of the stock
+:param pd.Series low: Long moving average length
+:param pd.Series high: Short moving average length
+:param int days: Days for moving sum
+:param bool strategy: If strategy should be returned
+:param bool getgains: If gains should be returned
+:param bool winning: If policy gain - no strategy gain should be returned
+:param float commissions: Percentage commissions per transaction
+:param bool accelerate: If uses cython
+:param float mingain: Minimum gain to sell
+:param bool firstopportunity: If sell first time you have mingain
+:param float stoploss: Maximum percentage loss</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def ultimate(prices: pd.Series, low: pd.Series, high: pd.Series, buylevel=30, selllevel=70, days=7, strategy=False, getgains=False, winning=False, commissions=0.005, mingain=0, accelerate=True, firstopportunity=False, stoploss=0) -&gt; pd.Series:
+    &#39;&#39;&#39;
+    Return the Ultimate oscillator
+
+    :param pd.Series prices: Prices of the stock
+    :param pd.Series low: Long moving average length
+    :param pd.Series high: Short moving average length
+    :param int days: Days for moving sum
+    :param bool strategy: If strategy should be returned
+    :param bool getgains: If gains should be returned
+    :param bool winning: If policy gain - no strategy gain should be returned
+    :param float commissions: Percentage commissions per transaction
+    :param bool accelerate: If uses cython
+    :param float mingain: Minimum gain to sell
+    :param bool firstopportunity: If sell first time you have mingain
+    :param float stoploss: Maximum percentage loss
+    &#39;&#39;&#39;
+    if prices.index.duplicated().any():
+        raise ValueError(&#34;There are some duplicate indexes.&#34;)
+    bp = prices - np.minimum(prices.shift(1), low)
+    tr = np.maximum(high, prices.shift(1)) - np.minimum(prices.shift(1), low)
+    avg1 = bp.rolling(days).sum()/tr.rolling(days).sum()
+    avg2 = bp.rolling(2*days).sum()/tr.rolling(2*days).sum()
+    avg3 = bp.rolling(3*days).sum()/tr.rolling(3*days).sum()
+    ult = 100 * (4*avg1 + 2*avg2 + avg3)/7
+    if winning or strategy or getgains:
+        buy = ult &lt; buylevel
+        sell = ult &gt; selllevel
+        policy = getpolicy(buy=buy, sell=sell, prices=prices, mingain=mingain, stoploss=stoploss, accelerate=accelerate, firstopportunity=firstopportunity)
+    else:
+        return ult
+    if winning:
+        gain = gains(prices=prices, policy=policy, commissions=commissions)
+        diff = (prices.iloc[-1]/prices.iloc[0]) - 1
+        return gain.sum() - diff * 100
+    if strategy:
+        return policy
+    if getgains:
+        return gains(prices=prices, policy=policy, commissions=commissions)</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="technical.bollinger_bands" href="#technical.bollinger_bands">bollinger_bands</a></code></li>
+<li><code><a title="technical.gains" href="#technical.gains">gains</a></code></li>
+<li><code><a title="technical.getpolicy" href="#technical.getpolicy">getpolicy</a></code></li>
+<li><code><a title="technical.macd" href="#technical.macd">macd</a></code></li>
+<li><code><a title="technical.ultimate" href="#technical.ultimate">ultimate</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>
