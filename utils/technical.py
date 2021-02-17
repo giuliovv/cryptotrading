@@ -40,7 +40,7 @@ def macd(prices: pd.Series, long: int, short: int, strategy=False, getgains=Fals
         return gains(prices=prices, policy=policy, commissions=commissions)
     return macdvalues
     
-def ultimate(prices: pd.Series, low: pd.Series, high: pd.Series, buylevel=30, selllevel=70, days=7, strategy=False, getgains=False, winning=False, commissions=0.005, accelerate=True) -> pd.Series:
+def ultimate(prices: pd.Series, low: pd.Series, high: pd.Series, buylevel=30, selllevel=70, days=7, strategy=False, getgains=False, winning=False, commissions=0.005, mingain=0, accelerate=True, firstopportunity=False, stoploss=0) -> pd.Series:
     '''
     Return the Ultimate oscillator
 
@@ -53,6 +53,9 @@ def ultimate(prices: pd.Series, low: pd.Series, high: pd.Series, buylevel=30, se
     :param bool winning: If policy gain - no strategy gain should be returned
     :param float commissions: Percentage commissions per transaction
     :param bool accelerate: If uses cython
+    :param float mingain: Minimum gain to sell
+    :param bool firstopportunity: If sell first time you have mingain
+    :param float stoploss: Maximum percentage loss
     '''
     if prices.index.duplicated().any():
         raise ValueError("There are some duplicate indexes.")
@@ -65,7 +68,7 @@ def ultimate(prices: pd.Series, low: pd.Series, high: pd.Series, buylevel=30, se
     if winning or strategy or getgains:
         buy = ult < buylevel
         sell = ult > selllevel
-        policy = getpolicy(buy=buy, sell=sell, accelerate=accelerate)
+        policy = getpolicy(buy=buy, sell=sell, prices=prices, mingain=mingain, stoploss=stoploss, accelerate=accelerate, firstopportunity=firstopportunity)
     else:
         return ult
     if winning:
@@ -77,7 +80,7 @@ def ultimate(prices: pd.Series, low: pd.Series, high: pd.Series, buylevel=30, se
     if getgains:
         return gains(prices=prices, policy=policy, commissions=commissions)
 
-def bollinger_bands(prices: pd.Series, k=1, period=1000, strategy=False, getgains=False, winning=False, commissions=0.005, accelerate=True) -> (pd.Series, pd.Series):
+def bollinger_bands(prices: pd.Series, k=1, period=1000, strategy=False, getgains=False, winning=False, commissions=0.005, accelerate=True, mingain=0, firstopportunity=False, stoploss=0) -> (pd.Series, pd.Series):
     '''
     Return the Bollinger bands
 
@@ -89,6 +92,9 @@ def bollinger_bands(prices: pd.Series, k=1, period=1000, strategy=False, getgain
     :param bool winning: If policy gain - no strategy gain should be returned
     :param float commissions: Percentage commissions per transaction
     :param bool accelerate: If uses cython
+    :param float mingain: Minimum gain to sell
+    :param bool firstopportunity: If sell first time you have mingain
+    :param float stoploss: Maximum percentage loss
     '''
     std = prices.rolling(period).std()
     mean = prices.rolling(period).mean()
@@ -97,7 +103,7 @@ def bollinger_bands(prices: pd.Series, k=1, period=1000, strategy=False, getgain
     if strategy or getgains or winning:
         sell = prices > upperband
         buy = prices < lowerband
-        policy = getpolicy(buy=buy, sell=sell, accelerate=accelerate)
+        policy = getpolicy(buy=buy, sell=sell, prices=prices, mingain=mingain, stoploss=stoploss, accelerate=accelerate, firstopportunity=firstopportunity)
     if winning:
         gain = gains(prices=prices, policy=policy, commissions=commissions)
         diff = (prices.iloc[-1]/prices.iloc[0]) - 1
@@ -126,14 +132,20 @@ def gains(prices: pd.Series, policy: pd.Series, budget=100, commissions=0.005) -
     gains = (sell/buy) - 1
     return (gains - commissions*2)*budget
 
-def getpolicy(buy: pd.Series, sell: pd.Series, accelerate=True) -> pd.Series:
+def getpolicy(buy: pd.Series, sell: pd.Series, prices: pd.Series, mingain=0, stoploss=0, accelerate=True, firstopportunity=False) -> pd.Series:
     """
     Return the policy given all the moments sell or buy is True
 
     :param pd.Series buy: When the buy pricinple is respected
     :param pd.Series sell: When the sell pricinple is respected
+    :param float mingain: Minimum gain to sell
+    :param float stoploss: Maximum percentage loss
     :param bool accelerate: If use cython
+    :param bool firstopportunity: If sell first time you have mingain, MUST USE ACCELERATE
     """
+    if firstopportunity and not accelerate:
+        print("Chaning accelerate to True to use firstopportunity.")
+        accelerate = True
     buys = buy.shift(1) != buy
     sells = sell.shift(1) != sell
     policy = pd.Series(np.zeros(buy.size), index=buy.index)
@@ -141,15 +153,22 @@ def getpolicy(buy: pd.Series, sell: pd.Series, accelerate=True) -> pd.Series:
         buys.reset_index(drop=True, inplace=True)
         sells.reset_index(drop=True, inplace=True)
         index = buys[buys | sells].index.to_numpy()
-        policy_ = ultimate_cycle.ultimate_cycle(policy.to_numpy(), buys.to_numpy(), sells.to_numpy(), index)
+        if mingain == 0 and stoploss == 0:
+            policy_ = ultimate_cycle.ultimate_cycle(policy.to_numpy(), buys.to_numpy(), sells.to_numpy(), index)
+        elif not firstopportunity and stoploss == 0:
+            policy_ = ultimate_cycle.cycle_checkgain(policy.to_numpy(), buys.to_numpy(), sells.to_numpy(), index, prices.to_numpy(), mingain)
+        else:
+            policy_ = ultimate_cycle.cycle_absolutegain(policy.to_numpy(dtype=bool), buys.to_numpy(dtype=bool), buys[buys].index.to_numpy(dtype=np.int32), prices.to_numpy(dtype=np.float32), mingain, stoploss)
         policy = pd.Series(policy_, index=policy.index)
     else:
         token = 1
+        buy_price = 0
         for idx in tqdm(buys[buys | sells].index):
             if token and buys.loc[idx]:
                 policy.loc[idx] = 1
                 token = 0
-            elif not token and sells.loc[idx]:
+                buy_price = prices.loc[idx]
+            elif not token and sells.loc[idx] and mingain*(prices.loc[idx]/buy_price) >= mingain*(1 + mingain):
                 policy.loc[idx] = 1
                 token = 1
     return policy == 1
