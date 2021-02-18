@@ -7,4 +7,4 @@ Documentation for [loader](https://giuliovaccari.it/cryptotrading/html/loaders.h
 
 Documentation for [technical](https://giuliovaccari.it/cryptotrading/html/technical.html)
 
-Notebook examples in the [example folder](../../examples).
+Notebook examples in the [example folder](../../tree/main/examples).
