@@ -114,6 +114,43 @@ def bollinger_bands(prices: pd.Series, k=1, period=1000, strategy=False, getgain
         return gains(prices=prices, policy=policy, commissions=commissions)
     return lowerband, upperband
 
+def williams(prices: pd.Series, low: pd.Series, high: pd.Series, buylevel=-80, selllevel=-20, days=10, strategy=False, getgains=False, winning=False, commissions=0.005, mingain=0, accelerate=True, firstopportunity=False, stoploss=0) -> pd.Series:
+    '''
+    Return the Williams %R oscillator
+
+    :param pd.Series prices: Prices of the stock
+    :param pd.Series low: Long moving average length
+    :param pd.Series high: Short moving average length
+    :param int days: Days for moving sum
+    :param bool strategy: If strategy should be returned
+    :param bool getgains: If gains should be returned
+    :param bool winning: If policy gain - no strategy gain should be returned
+    :param float commissions: Percentage commissions per transaction
+    :param bool accelerate: If uses cython
+    :param float mingain: Minimum gain to sell
+    :param bool firstopportunity: If sell first time you have mingain
+    :param float stoploss: Maximum percentage loss
+    '''
+    if prices.index.duplicated().any():
+        raise ValueError("There are some duplicate indexes.")
+    high_N = high.rolling(days).max()
+    low_N = low.rolling(days).min()
+    R = -100*(high_N - prices)/(high_N - low_N)
+    if winning or strategy or getgains:
+        buy = R > buylevel
+        sell = R < selllevel
+        policy = getpolicy(buy=buy, sell=sell, prices=prices, mingain=mingain, stoploss=stoploss, accelerate=accelerate, firstopportunity=firstopportunity)
+    else:
+        return R
+    if winning:
+        gain = gains(prices=prices, policy=policy, commissions=commissions)
+        diff = (prices.iloc[-1]/prices.iloc[0]) - 1
+        return gain.sum() - diff * 100
+    if strategy:
+        return policy
+    if getgains:
+        return gains(prices=prices, policy=policy, commissions=commissions)
+
 # UTILS
 
 def gains(prices: pd.Series, policy: pd.Series, budget=100, commissions=0.005) -> pd.Series:
