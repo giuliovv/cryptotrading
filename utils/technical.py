@@ -151,6 +151,37 @@ def williams(prices: pd.Series, low: pd.Series, high: pd.Series, buylevel=-80, s
     if getgains:
         return gains(prices=prices, policy=policy, commissions=commissions)
 
+def momentum(prices: pd.Series, period=10, strategy=False, getgains=False, winning=False, commissions=0.005) -> pd.Series:
+    '''
+    Return the Momentum
+
+    :param pd.Series prices: Prices of the stock
+    :param int period: Days for moving average
+    :param bool strategy: If strategy should be returned
+    :param bool getgains: If gains should be returned
+    :param bool winning: If policy gain - no strategy gain should be returned
+    :param float commissions: Percentage commissions per transaction
+    '''
+    if prices.index.duplicated().any():
+        raise ValueError("There are some duplicate indexes.")
+    momentum = prices.rolling(period).mean().pct_change()
+    if winning or strategy or getgains:
+        buy = momentum > 0
+        sell = momentum < 0
+        buy_ = buy.shift(1) != buy
+        sell_ = sell.shift(1) != sell
+        policy = buy_ | sell_
+    else:
+        return momentum
+    if winning:
+        gain = gains(prices=prices, policy=policy, commissions=commissions)
+        diff = (prices.iloc[-1]/prices.iloc[0]) - 1
+        return gain.sum() - diff * 100
+    if strategy:
+        return policy
+    if getgains:
+        return gains(prices=prices, policy=policy, commissions=commissions)
+
 # UTILS
 
 def gains(prices: pd.Series, policy: pd.Series, budget=100, commissions=0.005) -> pd.Series:
