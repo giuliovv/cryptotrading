@@ -170,6 +170,7 @@ def momentum(prices: pd.Series, period=10, strategy=False, getgains=False, winni
         sell = momentum < 0
         buy_ = buy.shift(1) != buy
         sell_ = sell.shift(1) != sell
+        sell_.loc[:buy_[buy_].iloc[0].index] = 0
         policy = buy_ | sell_
     else:
         return momentum
