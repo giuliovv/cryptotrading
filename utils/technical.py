@@ -65,6 +65,9 @@ def ultimate(prices: pd.Series, low: pd.Series, high: pd.Series, buylevel=30, se
     avg2 = bp.rolling(2*days).sum()/tr.rolling(2*days).sum()
     avg3 = bp.rolling(3*days).sum()/tr.rolling(3*days).sum()
     ult = 100 * (4*avg1 + 2*avg2 + avg3)/7
+    if mingain == 0 and not firstopportunity and stoploss == 0:
+        prices = prices.loc[~ult.isna()]
+        ult = ult.dropna()
     if winning or strategy or getgains:
         buy = ult < buylevel
         sell = ult > selllevel
@@ -213,7 +216,7 @@ def getpolicy(buy: pd.Series, sell: pd.Series, prices: pd.Series, mingain=0, sto
     :param bool firstopportunity: If sell first time you have mingain, MUST USE ACCELERATE
     """
     if firstopportunity and not accelerate:
-        print("Chaning accelerate to True to use firstopportunity.")
+        print("Changing accelerate to True to use firstopportunity.")
         accelerate = True
     buys = buy.shift(1) != buy
     sells = sell.shift(1) != sell
