@@ -1,5 +1,5 @@
 # Cryptotrading
-Super fast technical analysis tools and API wrapper for bitstamp.
+Super fast technical analysis tools, trading gym environment and API wrapper for bitstamp 
 
 To use bitstamp API wrapper create a new file key.py inside a folder apikeys. key.py content must be apikey="YOUR BITSTAMP API KEY"
 
